@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+  height: 100vh;
+  padding: 20px;
+}
+
+header {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-link {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.banner {
+  background-color: #f8d7da;
+  text-align: center;
+  padding: 20px;
+}
+
+.aside-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #f1f1f1;
+  padding: 20px;
+  height: calc(100vh - 60px);
+}
+
+.aside-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  
+}
+
+.login-button {
+  padding: 10px;
+  width: 100%;
+}
+
+.login-menu {
+  list-style: none;
+  margin-bottom: 100px;
+}
+
+.category {
+  list-style: none;
+  margin-top: 20px;
+}
+
+li {
+  margin-bottom: 30px;
+}
+
+.category_list{
+  text-align: center;
+  line-height: 30px;
+}
+
+hr{
+  margin-bottom: 30px;
+}
+/*메인*/
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  border-right:none;
+  border-left:none;
+  border-top:none;
+  border-bottom:none;
+
+}
+
+.write-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.write-button {
+  padding: 10px 20px;
+}
+/*회원가입 폼*/
+
+
+
+h2 {
+  margin-bottom: 30px;
+}
+
+input {
+
+}
