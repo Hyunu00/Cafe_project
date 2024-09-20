@@ -16,12 +16,12 @@ import com.example.demo.service.UserService;
 public class BoardController {
 
     private final BoardService boardService;
-    private final UserService userService;  // UserService를 추가하여 사용자를 조회
+    private final UserService userService;
 
     @Autowired
     public BoardController(BoardService boardService, UserService userService) {
         this.boardService = boardService;
-        this.userService = userService;  // UserService 주입
+        this.userService = userService;
     }
 
     // 전체 게시글 가져오기
@@ -42,6 +42,7 @@ public class BoardController {
         return boardService.getPostsByUserId(userId);
     }
 
+    // 게시글 생성 (세션에서 로그인된 사용자 정보 사용)`
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@RequestBody Board board, HttpSession session) {
         try {
@@ -55,11 +56,31 @@ public class BoardController {
             board.setUser(loggedInUser);
 
             // 게시글 저장
-            Board createdBoard = boardService.saveBoard(board);
+            Board createdBoard = boardService.saveBoard(board, loggedInUser.getUserId());  // 두 번째 인자로 loggedInUser.getUserId() 전달
             return ResponseEntity.ok("게시글 작성 완료");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                 .body("게시글 작성 중 오류 발생: " + e.getMessage());
         }
     }
+
+    // Board 생성 시 로그인된 사용자의 ID를 사용하여 CRT_USER, UDT_USER 설정
+    @PostMapping
+    public ResponseEntity<Board> createBoard(@RequestBody Board board, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("userId");
+        board.setUpdatedBy(loggedInUser);
+        Board createdBoard = boardService.saveBoard(board, loggedInUser); 
+        return new ResponseEntity<>(createdBoard, HttpStatus.CREATED);
+    }
+
+    // Board 수정 시 UDT_USER 업데이트
+    @PutMapping("/{id}")
+    public ResponseEntity<Board> updateBoard(@PathVariable Long id, @RequestBody Board boardDetails, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("userId");
+        boardDetails.setUpdatedBy(loggedInUser);
+        Board updatedBoard = boardService.saveBoard(boardDetails, loggedInUser);
+        return ResponseEntity.ok(updatedBoard);
+    }
+
 }

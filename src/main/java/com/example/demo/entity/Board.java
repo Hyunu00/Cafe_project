@@ -19,21 +19,36 @@ public class Board {
     @Column(name = "BOARD_TITLE", nullable = false)
     private String boardTitle;
 
-    // VARCHAR2(4000)으로 설정된 필드
     @Column(name = "BOARD_WRITE", nullable = false, length = 4000)
     private String boardWrite;
-
-    @Column(name = "BOARD_DATE")
-    private LocalDateTime boardDate;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    // 자동으로 게시글 작성 시간을 현재 시간으로 설정
+    @Column(name = "CRT_DT", nullable = false)
+    private LocalDateTime createdDate;
+
+    @Column(name = "CRT_USER", nullable = false)
+    private String createdBy;
+
+    @Column(name = "UDT_DT", nullable = false)
+    private LocalDateTime updatedDate;
+
+    @Column(name = "UDT_USER", nullable = false)
+    private String updatedBy;
+
+    // @PrePersist: 엔티티가 처음 저장될 때 자동으로 날짜 필드를 설정
     @PrePersist
     protected void onCreate() {
-        this.boardDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
+    }
+
+    // @PreUpdate: 엔티티가 업데이트될 때 자동으로 날짜 필드를 변경
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedDate = LocalDateTime.now();
     }
 
     // Getters and Setters
@@ -69,19 +84,43 @@ public class Board {
         this.boardWrite = boardWrite;
     }
 
-    public LocalDateTime getBoardDate() {
-        return boardDate;
-    }
-
-    public void setBoardDate(LocalDateTime boardDate) {
-        this.boardDate = boardDate;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(LocalDateTime updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 }

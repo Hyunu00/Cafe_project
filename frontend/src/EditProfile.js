@@ -1,57 +1,102 @@
-import React, { useState } from 'react';
+    import React, { useState } from 'react';
 
-function EditProfile({ user }) {
-    const [nickname, setNickname] = useState(user ? user.userNickname : '');
-    const [password, setPassword] = useState('');
+    function EditProfile({ user }) {
+        const [nickname, setNickname] = useState(user ? user.userNickname : '');
+        const [name, setName] = useState(user ? user.userName : '');
+        const [userId] = useState(user ? user.userId : '');  // ID는 수정하지 않음
+        const [password, setPassword] = useState('');
+        const [confirmPassword, setConfirmPassword] = useState('');
+        const [profileImage, setProfileImage] = useState(null);
 
-    const handleUpdate = async (e) => {
-        e.preventDefault();
+        const handleUpdate = async (e) => {
+            e.preventDefault();
 
-        const updatedData = { userNickname: nickname, userPassword: password };
-
-        try {
-            const response = await fetch(`http://localhost:8080/users/${user.userId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updatedData),
-            });
-
-            if (response.ok) {
-                alert('프로필이 업데이트되었습니다.');
-            } else {
-                alert('업데이트 실패');
+            if (password !== confirmPassword) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
             }
-        } catch (error) {
-            console.error('업데이트 에러:', error);
-        }
-    };
 
-    return (
-        <div>
-            <h2>프로필 수정</h2>
-            <form onSubmit={handleUpdate}>
-                <label>닉네임:</label>
-                <input 
-                    type="text" 
-                    value={nickname} 
-                    onChange={(e) => setNickname(e.target.value)} 
-                    required
-                /><br />
+            const formData = new FormData();
+            formData.append('userNickname', nickname);
+            formData.append('userName', name);
+            formData.append('userPassword', password);
+            formData.append('profileImage', profileImage);  // 이미지 파일 추가
 
-                <label>비밀번호:</label>
-                <input 
-                    type="password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    required
-                /><br />
+            try {
+                const response = await fetch(`http://localhost:8080/users/${userId}`, {
+                    method: 'PUT',
+                    body: formData,
+                    credentials: 'include',
+                });
 
-                <button type="submit">수정하기</button>
-            </form>
-        </div>
-    );
-}
+                if (response.ok) {
+                    alert('프로필이 업데이트되었습니다.');
+                } else {
+                    alert('업데이트 실패');
+                }
+            } catch (error) {
+                console.error('업데이트 에러:', error);
+            }
+        };
 
-export default EditProfile;
+        const handleImageChange = (e) => {
+            setProfileImage(e.target.files[0]);
+        };
+
+        return (
+            <div>
+                <h2>프로필 수정</h2>
+                <form onSubmit={handleUpdate}>
+                    <label>프로필 사진:</label>
+                    <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleImageChange}
+                    /><br />
+
+                    <label>닉네임:</label>
+                    <input 
+                        type="text" 
+                        value={nickname} 
+                        onChange={(e) => setNickname(e.target.value)} 
+                        required
+                    /><br />
+
+                    <label>이름:</label>
+                    <input 
+                        type="text" 
+                        value={name} 
+                        onChange={(e) => setName(e.target.value)} 
+                        required
+                    /><br />
+
+                    <label>아이디:</label>
+                    <input 
+                        type="text" 
+                        value={userId} 
+                        disabled
+                    /><br />
+
+                    <label>비밀번호:</label>
+                    <input 
+                        type="password" 
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        required
+                    /><br />
+
+                    <label>비밀번호 확인:</label>
+                    <input 
+                        type="password" 
+                        value={confirmPassword} 
+                        onChange={(e) => setConfirmPassword(e.target.value)} 
+                        required
+                    /><br />
+
+                    <button type="submit">수정하기</button>
+                </form>
+            </div>
+        );
+    }
+
+    export default EditProfile;

@@ -16,7 +16,7 @@ function Login({ setUser }) {
             return;
         }
 
-        const credentials = { userId, userPassword: password }; // 서버에 맞춘 데이터 이름
+        const credentials = { userId, userPassword: password }; 
         setLoading(true);
         setErrorMessage(''); // 에러 메시지 초기화
 
@@ -27,19 +27,19 @@ function Login({ setUser }) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(credentials),
-                credentials: 'include',  // 세션 쿠키 전송
+                credentials: 'include',  
             });
 
             if (response.ok) {
                 // 로그인 성공 시 사용자 정보 요청
                 const userResponse = await fetch('http://localhost:8080/users/current-user', {
                     method: 'GET',
-                    credentials: 'include',  // 세션 기반 요청
+                    credentials: 'include', 
                 });
 
                 if (userResponse.ok) {
                     const user = await userResponse.json();
-                    setUser(user); // 로그인된 사용자 정보를 상태에 저장
+                    setUser(user); 
                     alert('로그인 성공');
                     navigate('/');
                 } else {

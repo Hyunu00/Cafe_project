@@ -38,7 +38,6 @@ header {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background-color: #f1f1f1;
   padding: 20px;
   height: calc(100vh - 60px);
 }
@@ -48,8 +47,12 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+  background-color: #ccc;
   
+}
+
+.login-section {
+  background-color: #ccc;
 }
 
 .login-button {
@@ -82,6 +85,7 @@ hr{
 /*메인*/
 
 
+/* 테이블 스타일 */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -89,15 +93,16 @@ table {
 }
 
 table th, table td {
-  border: 1px solid #ccc;
+  border: none; /* 모든 테두리 제거 */
   padding: 10px;
   text-align: left;
-  border-right:none;
-  border-left:none;
-  border-top:none;
-  border-bottom:none;
-
 }
+
+/* 세로줄, 가로줄 모두 제거 */
+table td, table th {
+  border: none; /* 완전히 모든 테두리 제거 */
+}
+
 
 .write-button-container {
   display: flex;
