@@ -20,7 +20,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    // Create a new user
     @Transactional
     public User saveUser(User user) {
         try {
@@ -42,7 +41,7 @@ public class UserService {
         if (user != null && user.getUserPassword().equals(userPassword)) {
             return user;
         }
-        return null;  // 인증 실패 시 null 반환
+        return null;  
     }
 
     // 사용자 프로필 업데이트 메서드

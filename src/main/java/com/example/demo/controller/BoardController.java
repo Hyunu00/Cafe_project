@@ -10,6 +10,9 @@ import com.example.demo.entity.Board;
 import com.example.demo.entity.User;
 import com.example.demo.service.BoardService;
 import com.example.demo.service.UserService;
+import java.util.Arrays;
+
+
 
 @RestController
 @RequestMapping("/boards")
@@ -42,11 +45,11 @@ public class BoardController {
         return boardService.getPostsByUserId(userId);
     }
 
-    // 게시글 생성 (세션에서 로그인된 사용자 정보 사용)`
+    // 게시글 생성 (로그인된 사용자 정보 사용)
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@RequestBody Board board, HttpSession session) {
         try {
-            // 세션에서 현재 로그인된 사용자 가져오기
+            // 현재 로그인된 사용자 가져오기
             User loggedInUser = (User) session.getAttribute("user");
             if (loggedInUser == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
@@ -56,7 +59,7 @@ public class BoardController {
             board.setUser(loggedInUser);
 
             // 게시글 저장
-            Board createdBoard = boardService.saveBoard(board, loggedInUser.getUserId());  // 두 번째 인자로 loggedInUser.getUserId() 전달
+            Board createdBoard = boardService.saveBoard(board, loggedInUser.getUserId());
             return ResponseEntity.ok("게시글 작성 완료");
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,7 +73,7 @@ public class BoardController {
     public ResponseEntity<Board> createBoard(@RequestBody Board board, HttpSession session) {
         String loggedInUser = (String) session.getAttribute("userId");
         board.setUpdatedBy(loggedInUser);
-        Board createdBoard = boardService.saveBoard(board, loggedInUser); 
+        Board createdBoard = boardService.saveBoard(board, loggedInUser);
         return new ResponseEntity<>(createdBoard, HttpStatus.CREATED);
     }
 
@@ -83,4 +86,45 @@ public class BoardController {
         return ResponseEntity.ok(updatedBoard);
     }
 
+    // 카테고리별 게시글 리스트 반환
+    @GetMapping("/category/{category}")
+    public List<Board> getBoardsByCategory(
+        @PathVariable("category") String category) {
+
+        if (category.equals("all")) {
+            return boardService.getAllBoards();
+        } else {
+            int categoryId = getCategoryId(category);
+            return boardService.getBoardsByCategory(categoryId);
+        }
+    }
+    
+    // 게시판 나누기
+    private int getCategoryId(String category) {
+        switch (category) {
+            case "notice":
+                return 2;
+            case "questions":
+                return 3;
+            case "free":
+                return 4;
+            default:
+                return 1;
+        }
+    }
+
+    //글 세부조회
+    @GetMapping("/detail/{boardNumber}")
+    public ResponseEntity<Board> getBoardById(@PathVariable Long boardNumber) {
+        try {
+            Board board = boardService.getBoardById(boardNumber);
+            if (board != null) {
+                return ResponseEntity.ok(board);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

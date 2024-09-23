@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 function Register() {
-    const [userId, setUserId] = useState(''); // 필드 이름 변경
-    const [userPassword, setUserPassword] = useState(''); // 필드 이름 변경
+    const [userId, setUserId] = useState(''); 
+    const [userPassword, setUserPassword] = useState(''); 
     const [rePassword, setRePassword] = useState('');
-    const [userName, setUserName] = useState(''); // 필드 이름 변경
+    const [userName, setUserName] = useState(''); 
     const [userNickname, setUserNickname] = useState('');
 
     const handleSignup = async (e) => {
@@ -14,13 +14,12 @@ function Register() {
             alert("비밀번호가 일치하지 않습니다.");
             return;
         }
-
-        // 백엔드 User 엔티티와 필드 이름을 일치시킴
+        //DB에 넣을 정보
         const user = { 
-            userId,         // userId 필드로 변경
-            userPassword,   // userPassword 필드로 변경
-            userName,       // userName 필드로 변경
-            userNickname    // userNickname 필드 그대로 사용
+            userId,        
+            userPassword,   
+            userName,      
+            userNickname   
         };
 
         try {
@@ -50,7 +49,7 @@ function Register() {
                 <input 
                     type="text" 
                     value={userId} 
-                    onChange={(e) => setUserId(e.target.value)} // 필드 이름 변경
+                    onChange={(e) => setUserId(e.target.value)} 
                     required
                 /><br />
 
@@ -58,7 +57,7 @@ function Register() {
                 <input 
                     type="password" 
                     value={userPassword} 
-                    onChange={(e) => setUserPassword(e.target.value)} // 필드 이름 변경
+                    onChange={(e) => setUserPassword(e.target.value)} 
                     required
                 /><br />
 
@@ -74,7 +73,7 @@ function Register() {
                 <input 
                     type="text" 
                     value={userName} 
-                    onChange={(e) => setUserName(e.target.value)} // 필드 이름 변경
+                    onChange={(e) => setUserName(e.target.value)} 
                     required
                 /><br />
 

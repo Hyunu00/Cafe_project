@@ -17,18 +17,22 @@ public class BoardService {
         this.boardRepository = boardRepository;
     }
 
+    // 모든 게시글 리스트 반환
     public List<Board> getAllBoards() {
         return boardRepository.findAll();
     }
 
+    // 특정 사용자의 게시글 개수 반환
     public int getPostCountByUserId(String userId) {
         return boardRepository.countPostsByUserId(userId);
     }
 
+    // 특정 사용자의 게시글 리스트 반환
     public List<Board> getPostsByUserId(String userId) {
         return boardRepository.findByUserUserId(userId);
     }
 
+    // 게시글 저장
     @Transactional
     public Board saveBoard(Board board, String loggedInUser) {
         if (board.getCreatedDate() == null) {
@@ -38,7 +42,7 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    // createBoard 메서드 수정
+    // 게시글 생성
     public void createBoard(Board board, User user) {
         board.setUser(user);  // ManyToOne 관계의 user 설정
         board.setCreatedDate(LocalDateTime.now());  // 생성 시간 설정
@@ -47,5 +51,15 @@ public class BoardService {
         board.setUpdatedBy(user.getUserId());  // 수정자 설정
 
         boardRepository.save(board);  // 데이터베이스에 저장
+    }
+
+    // 카테고리별 게시물 목록 반환
+    public List<Board> getBoardsByCategory(int category) {
+        return boardRepository.findByBoardCategory(category);
+    }
+
+    // 특정 게시글 ID로 게시글 반환
+    public Board getBoardById(Long boardNumber) {
+        return boardRepository.findById(boardNumber).orElse(null);
     }
 }

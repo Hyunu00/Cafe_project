@@ -23,7 +23,7 @@ public class Board {
     private String boardWrite;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID", nullable = false)
     private User user;
 
     @Column(name = "CRT_DT", nullable = false)
