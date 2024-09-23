@@ -28,13 +28,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody User user, HttpSession session) {
         try {
-            // 로그인된 사용자 ID를 세션에서 가져오기
+            // 로그인된 사용자 ID 가져오기
             User loggedInUser = (User) session.getAttribute("user");
             if (loggedInUser == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
             }
             
-            // 사용자 생성 시 필수 필드 확인 (유효성 검사)
+            // 사용자 생성 시 필드 확인
             if (user.getUserId() == null || user.getUserPassword() == null || user.getUserName() == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("필수 필드가 누락되었습니다.");
             }
@@ -57,7 +57,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("아이디 또는 비밀번호가 잘못되었습니다.");
         }
 
-        // 로그인 성공 시 세션에 사용자 정보 저장
+        // 로그인 성공 시 사용자 정보 저장
         session.setAttribute("user", authenticatedUser);
         return ResponseEntity.ok("로그인 성공");
     }
@@ -65,7 +65,7 @@ public class UserController {
     // 로그아웃 처리
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpSession session) {
-        session.invalidate();  // 세션 무효화
+        session.invalidate(); 
         return ResponseEntity.ok("로그아웃 성공");
     }
 
@@ -105,8 +105,6 @@ public class UserController {
         }
     }
 
-
-    // 비밀번호 업데이트 (별도 API)
     @PutMapping("/{id}/password")
     public ResponseEntity<?> updatePassword(@PathVariable String id, @RequestBody String newPassword, HttpSession session) {
         try {

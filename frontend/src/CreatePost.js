@@ -26,8 +26,9 @@ function CreatePost() {
                 body: JSON.stringify(newPost),
             });
 
+            // 로그인 되어있는 사용자만 글 작성 가능
             if (!response.ok) {
-                console.error(`Error: ${response.status}`); // 상태 코드를 출력하여 문제 확인
+                console.error(`Error: ${response.status}`); // 오류 상태 확인
                 if (response.status === 401) {
                     alert('로그인이 필요합니다.');
                     navigate('/login'); // 로그인 페이지로 이동

@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import './App.css';
 
 function BoardList({ user }) {  
-    const { category = "all" } = useParams(); // URL 파라미터로부터 카테고리 가져오기
+    const { category = "all" } = useParams(); 
     const [boards, setBoards] = useState([]);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
@@ -13,7 +13,7 @@ function BoardList({ user }) {
     const [selectedCategory, setSelectedCategory] = useState(category); // 검색을 위한 선택된 카테고리
     const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
-    // 카테고리 한글 변환 함수
+    // 카테고리 한글 변환
     const getCategoryNameInKorean = (categoryId) => {
         switch (categoryId) {
             case 'all':
@@ -79,7 +79,7 @@ function BoardList({ user }) {
     const noticeBoards = boards.filter(board => board.boardCategory === 2); // 공지사항
     const otherBoards = boards.filter(board => board.boardCategory !== 2); // 기타 게시물
 
-    // 기타 게시물 최신순으로 정렬 (updatedDate 기준 내림차순)
+    // 기타 게시물 최신순으로 정렬
     otherBoards.sort((a, b) => new Date(b.updatedDate) - new Date(a.updatedDate));
 
     // 제목이나 내용에 검색어가 포함된 게시물 필터링

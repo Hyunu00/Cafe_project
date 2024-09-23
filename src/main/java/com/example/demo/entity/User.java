@@ -39,18 +39,16 @@ public class User {
     @Column(name = "UDT_USER", nullable = false)
     private String updatedBy;
 
-    // 레코드가 생성될 때 자동으로 설정
     @PrePersist
     protected void onCreate() {
         this.createdDate = LocalDateTime.now();
-        this.createdBy = "System"; // 실제 사용자 정보로 변경 가능
+        this.createdBy = "System";
     }
 
-    // 레코드가 수정될 때 자동으로 설정
     @PreUpdate
     protected void onUpdate() {
         this.updatedDate = LocalDateTime.now();
-        this.updatedBy = "System"; // 실제 사용자 정보로 변경 가능
+        this.updatedBy = "System"; 
     }
 
     // Getters and Setters

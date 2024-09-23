@@ -38,14 +38,12 @@ public class Board {
     @Column(name = "UDT_USER", nullable = false)
     private String updatedBy;
 
-    // @PrePersist: 엔티티가 처음 저장될 때 자동으로 날짜 필드를 설정
     @PrePersist
     protected void onCreate() {
         this.createdDate = LocalDateTime.now();
         this.updatedDate = LocalDateTime.now();
     }
 
-    // @PreUpdate: 엔티티가 업데이트될 때 자동으로 날짜 필드를 변경
     @PreUpdate
     protected void onUpdate() {
         this.updatedDate = LocalDateTime.now();

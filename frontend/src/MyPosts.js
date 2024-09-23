@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; // React Router의 Link를 사용하여 페이지 이동 적용
-import './App.css'; // 테이블 스타일 적용
-
+import { Link } from 'react-router-dom'; 
+import './App.css'; 
+//내가 작성한 게시물
 function MyPosts({ user }) {
     const [posts, setPosts] = useState([]);
     const [error, setError] = useState(null);
