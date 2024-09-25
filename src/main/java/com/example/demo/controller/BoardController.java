@@ -102,11 +102,11 @@ public class BoardController {
     // 게시판 나누기
     private int getCategoryId(String category) {
         switch (category) {
-            case "notice":
+            case "free":
                 return 2;
             case "questions":
                 return 3;
-            case "free":
+            case "notice":
                 return 4;
             default:
                 return 1;
@@ -115,16 +115,23 @@ public class BoardController {
 
     //글 세부조회
     @GetMapping("/detail/{boardNumber}")
-    public ResponseEntity<Board> getBoardById(@PathVariable Long boardNumber) {
-        try {
-            Board board = boardService.getBoardById(boardNumber);
-            if (board != null) {
-                return ResponseEntity.ok(board);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public ResponseEntity<Board> getBoardDetail(@PathVariable Long boardNumber) {
+        Board board = boardService.getBoardDetail(boardNumber);
+        return new ResponseEntity<>(board, HttpStatus.OK);
     }
+    
+    @PutMapping("/update/{boardNumber}")
+    public ResponseEntity<Board> updateBoard(
+            @PathVariable Long boardNumber,
+            @RequestBody Board updatedBoard) {
+        Board board = boardService.updateBoard(boardNumber, updatedBoard);
+        return new ResponseEntity<>(board, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{boardNumber}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long boardNumber) {
+        boardService.deleteBoard(boardNumber);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content 응답
+    }
+
 }

@@ -9,6 +9,7 @@ import CreatePost from './CreatePost';
 import FindId from './FindId';
 import FindPassword from './FindPassword';
 import BoardDetail from './BoardDetail';
+import UserManagement from './UserManagement'; // 사용자 관리 페이지 추가
 import './App.css';
 
 function App() {
@@ -17,7 +18,6 @@ function App() {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    // 로그인 상태 유지
     useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
@@ -43,7 +43,6 @@ function App() {
         fetchCurrentUser(); 
     }, []);
     
-    // 게시글 개수를 상태로 저장
     useEffect(() => {
         const fetchPostCount = async () => {
             if (user) {
@@ -71,14 +70,12 @@ function App() {
                 <div className="banner">메인 배너</div>
             </header>
 
-            {/* 고정된 사이드바 */}
             <aside className="aside-container">
                 <RenderAside user={user} setUser={setUser} postCount={postCount} error={error} />
                 <div className="aside-section">
                     <ul className="category">
                         <li>카테고리</li>
                         <hr width="100%" color="black"></hr>
-                        {/* 카테고리 링크 설정 */}
                         <Link to="/boards/category/all">전체게시판</Link><br />
                         <Link to="/boards/category/notice">공지게시판</Link><br />
                         <Link to="/boards/category/free">자유게시판</Link><br />
@@ -95,13 +92,15 @@ function App() {
                     <Route path="/login" element={<Login setUser={setUser} />} />
                     <Route path="/find-id" element={<FindId />} />
                     <Route path="/find-password" element={<FindPassword />} />
-                    <Route path="/boards/detail/:boardNumber" element={<BoardDetail />} />
-                    {/* 로그인 후에만 접근 가능한 페이지 */}
+                    <Route path="/boards/detail/:boardNumber" element={<BoardDetail user={user}/>} />
                     {user && (
                         <>
                             <Route path="/my-posts" element={<MyPosts user={user} />} />
                             <Route path="/edit-profile" element={<EditProfile user={user} />} />
                             <Route path="/create-post" element={<CreatePost user={user} />} />
+                            {user.userLevel === 4 && (
+                                <Route path="/user-management" element={<UserManagement />} />
+                            )}
                         </>
                     )}
                 </Routes>
@@ -109,11 +108,11 @@ function App() {
         </div>
     );
 }
-//상단 사이드바 로그인 관련 처리
+
+// 상단 사이드바에 사용자 레벨과 관리자 링크 추가
 function RenderAside({ user, setUser, postCount, error }) {
     const navigate = useNavigate();
 
-    // 로그아웃 처리
     const handleLogout = async () => {
         try {
             const response = await fetch('http://localhost:8080/users/logout', {
@@ -125,7 +124,7 @@ function RenderAside({ user, setUser, postCount, error }) {
                 localStorage.removeItem('token');
                 setUser(null);
                 alert('로그아웃 되었습니다.');
-                navigate('/login'); // 로그아웃 후 로그인 페이지로 이동
+                navigate('/login');
             } else {
                 throw new Error('로그아웃 실패');
             }
@@ -160,8 +159,12 @@ function RenderAside({ user, setUser, postCount, error }) {
                     )}
                     <p>닉네임: {user.userNickname}</p>
                     <p>아이디: {user.userId}</p>
+                    <p>레벨: {user.userLevel}</p>
                     <Link to="/my-posts">내가 쓴 글</Link> : {postCount} <br />
                     <Link to="/edit-profile">개인정보 수정</Link><br />
+                    {user.userLevel === 4 && (
+                        <Link to="/user-management">사용자 관리</Link> // 사용자 관리 링크
+                    )}
                     <button onClick={handleLogout}>로그아웃</button>
                 </div>
             )}

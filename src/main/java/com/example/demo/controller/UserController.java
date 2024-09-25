@@ -8,6 +8,8 @@ import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;           
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/users")
@@ -26,28 +28,23 @@ public class UserController {
 
     // 사용자 생성 (회원가입)
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody User user, HttpSession session) {
+    public ResponseEntity<?> createUser(@RequestBody User user) {
         try {
-            // 로그인된 사용자 ID 가져오기
-            User loggedInUser = (User) session.getAttribute("user");
-            if (loggedInUser == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-            }
-            
             // 사용자 생성 시 필드 확인
             if (user.getUserId() == null || user.getUserPassword() == null || user.getUserName() == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("필수 필드가 누락되었습니다.");
             }
 
-            // 생성자 정보 설정
-            user.setCreatedBy(loggedInUser.getUserId());
-            user.setUpdatedBy(loggedInUser.getUserId());
+            // 새 사용자 생성
+            user.setCreatedBy("System");
+            user.setUpdatedBy("System");
             User createdUser = userService.saveUser(user);
             return ResponseEntity.ok("회원가입 성공");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원가입 실패: " + e.getMessage());
         }
     }
+
 
     // 로그인 처리
     @PostMapping("/login")
@@ -79,16 +76,17 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    // 사용자 정보 업데이트 (닉네임, 이름 등)
+    // 사용자 정보 업데이트 (닉네임, 이름, 비밀번호, 레벨 등)
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUserProfile(
         @PathVariable String id,
-        @RequestPart("userNickname") String nickname,
-        @RequestPart("userName") String name,
-        @RequestPart("userPassword") String password,
-        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
+        @RequestParam("userNickname") String nickname,
+        @RequestParam("userName") String name,
+        @RequestParam("userPassword") String password,
+        @RequestParam(value = "userLevel", required = false) Integer userLevel,
+        @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
         HttpSession session) {
-
+            
         try {
             // 로그인된 사용자 확인
             User loggedInUser = (User) session.getAttribute("user");
@@ -97,13 +95,13 @@ public class UserController {
             }
 
             // 사용자 정보 업데이트 처리
-            // 이미지 파일 처리 로직 추가 필요
-            userService.updateUserProfile(id, nickname, name, password, profileImage);
+            userService.updateUserProfile(id, nickname, name, password, userLevel, profileImage);
             return ResponseEntity.ok("프로필이 업데이트되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 업데이트 실패: " + e.getMessage());
         }
     }
+
 
     @PutMapping("/{id}/password")
     public ResponseEntity<?> updatePassword(@PathVariable String id, @RequestBody String newPassword, HttpSession session) {
@@ -123,19 +121,13 @@ public class UserController {
     }
 
     // 사용자 삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable String id, HttpSession session) {
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
         try {
-            // 로그인된 사용자 확인
-            User loggedInUser = (User) session.getAttribute("user");
-            if (loggedInUser == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-            }
-
-            userService.deleteUser(id);
-            return ResponseEntity.ok("사용자 삭제 성공");
+            userService.deleteUser(userId);
+            return ResponseEntity.noContent().build(); 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("사용자 삭제 실패: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 오류 시 500 상태 코드 반환
         }
     }
 
@@ -168,4 +160,31 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비밀번호 찾기 중 오류 발생: " + e.getMessage());
         }
     }
+
+    @PutMapping("/admin/{id}")
+    public ResponseEntity<?> updateUser(
+            @PathVariable String id,
+            @RequestBody User userDetails) {
+        try {
+            User updatedUser = userService.updateUser(id, userDetails);
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("사용자 업데이트 실패: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/check-duplicate")
+    public ResponseEntity<?> checkDuplicate(@RequestBody Map<String, String> requestData) {
+        String userId = requestData.get("userId");
+        String userNickname = requestData.get("userNickname");
+
+        boolean isDuplicate = userService.isUserIdOrNicknameExists(userId, userNickname);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("userIdExists", userService.isUserIdOrNicknameExists(userId, null));
+        response.put("nicknameExists", userService.isUserIdOrNicknameExists(null, userNickname));
+        
+        return ResponseEntity.ok(response);
+    }
+
 }

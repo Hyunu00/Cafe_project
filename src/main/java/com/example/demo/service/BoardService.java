@@ -36,21 +36,21 @@ public class BoardService {
     @Transactional
     public Board saveBoard(Board board, String loggedInUser) {
         if (board.getCreatedDate() == null) {
-            board.setCreatedBy(loggedInUser);  // 새로 생성될 경우 생성자 정보 설정
+            board.setCreatedBy(loggedInUser);  
         }
-        board.setUpdatedBy(loggedInUser);  // 수정자 정보 설정
+        board.setUpdatedBy(loggedInUser);  
         return boardRepository.save(board);
     }
 
     // 게시글 생성
     public void createBoard(Board board, User user) {
-        board.setUser(user);  // ManyToOne 관계의 user 설정
-        board.setCreatedDate(LocalDateTime.now());  // 생성 시간 설정
-        board.setUpdatedDate(LocalDateTime.now());  // 업데이트 시간 설정
-        board.setCreatedBy(user.getUserId());  // 생성자 설정
-        board.setUpdatedBy(user.getUserId());  // 수정자 설정
+        board.setUser(user); 
+        board.setCreatedDate(LocalDateTime.now());  
+        board.setUpdatedDate(LocalDateTime.now());  
+        board.setCreatedBy(user.getUserId());  
+        board.setUpdatedBy(user.getUserId()); 
 
-        boardRepository.save(board);  // 데이터베이스에 저장
+        boardRepository.save(board);  
     }
 
     // 카테고리별 게시물 목록 반환
@@ -62,4 +62,23 @@ public class BoardService {
     public Board getBoardById(Long boardNumber) {
         return boardRepository.findById(boardNumber).orElse(null);
     }
+
+    public Board getBoardDetail(Long boardNumber) {
+        return boardRepository.findById(boardNumber)
+            .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+    }
+
+    public Board updateBoard(Long boardNumber, Board updatedBoard) {
+        Board board = boardRepository.findById(boardNumber)
+                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+        board.setBoardTitle(updatedBoard.getBoardTitle());
+        board.setBoardWrite(updatedBoard.getBoardWrite());
+        board.setUpdatedDate(LocalDateTime.now());
+        return boardRepository.save(board);
+    }
+
+    public void deleteBoard(Long boardNumber) {
+        boardRepository.deleteById(boardNumber);
+    }
+    
 }

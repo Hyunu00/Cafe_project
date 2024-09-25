@@ -11,7 +11,7 @@ function BoardList({ user }) {
     const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태 추가
     const [searchCategory, setSearchCategory] = useState(category); // 검색에 사용될 카테고리
     const [selectedCategory, setSelectedCategory] = useState(category); // 검색을 위한 선택된 카테고리
-    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+    const navigate = useNavigate(); 
 
     // 카테고리 한글 변환
     const getCategoryNameInKorean = (categoryId) => {
@@ -19,15 +19,15 @@ function BoardList({ user }) {
             case 'all':
             case 1:
                 return '전체';
-            case 'notice':
+            case 'free':
             case 2:
-                return '공지';
+                return '자유';
             case 'questions':
             case 3:
                 return '질문';
-            case 'free':
+            case 'notice':
             case 4:
-                return '자유';
+                return '공지';
             default:
                 return '알 수 없음';
         }
@@ -43,7 +43,7 @@ function BoardList({ user }) {
                 } else {
                     const data = await response.json();
                     setBoards(data);
-                    setTotalPages(Math.ceil(data.length / 10)); // 총 페이지 수 계산
+                    setTotalPages(Math.ceil(data.length / 10)); 
                 }
             } catch (err) {
                 setError('네트워크 오류가 발생했습니다.');
@@ -54,16 +54,16 @@ function BoardList({ user }) {
     }, [category]);
 
     const handleSearch = () => {
-        setSearchCategory(selectedCategory); // 선택된 카테고리로 검색 수행
-        navigate(`/boards/category/${selectedCategory}`); // 카테고리 변경 시 경로 이동
+        setSearchCategory(selectedCategory); 
+        navigate(`/boards/category/${selectedCategory}`);
     };
 
     const handleCreatePost = () => {
         if (user) {
-            navigate('/create-post'); // 로그인된 경우 글쓰기 페이지로 이동
+            navigate('/create-post'); 
         } else {
-            alert('로그인이 필요합니다.'); // 로그인되지 않은 경우 경고 메시지
-            navigate('/login'); // 로그인 페이지로 이동
+            alert('로그인이 필요합니다.'); 
+            navigate('/login'); 
         }
     };
 
@@ -76,8 +76,8 @@ function BoardList({ user }) {
     }
 
     // 공지사항과 기타 게시물 분리
-    const noticeBoards = boards.filter(board => board.boardCategory === 2); // 공지사항
-    const otherBoards = boards.filter(board => board.boardCategory !== 2); // 기타 게시물
+    const noticeBoards = boards.filter(board => board.boardCategory === 4); // 공지사항
+    const otherBoards = boards.filter(board => board.boardCategory !== 4); // 기타 게시물
 
     // 기타 게시물 최신순으로 정렬
     otherBoards.sort((a, b) => new Date(b.updatedDate) - new Date(a.updatedDate));
@@ -139,7 +139,7 @@ function BoardList({ user }) {
                 </thead>
                 <tbody>
                     {displayedBoards.map((board) => (
-                        <tr key={board.boardNumber} className={board.boardCategory === 2 ? 'notice-row' : ''}>
+                        <tr key={board.boardNumber} className={board.boardCategory === 4 ? 'notice-row' : ''}>
                             <td>{board.boardNumber}</td>
                             <td>{getCategoryNameInKorean(board.boardCategory)}</td>
                             <td>

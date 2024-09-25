@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.io.IOException;
 import org.springframework.stereotype.Service;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
@@ -45,47 +46,29 @@ public class UserService {
     }
 
     // 사용자 프로필 업데이트 메서드
-    public void updateUserProfile(String id, String nickname, String name, String password, MultipartFile profileImage) {
+    public void updateUserProfile(String id, String nickname, String name, String password, Integer userLevel, MultipartFile profileImage) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setUserNickname(nickname);
             user.setUserName(name);
             user.setUserPassword(password);
+            user.setUserLevel(userLevel);  // userLevel 업데이트
 
-            // 프로필 이미지가 있을 경우 처리
             if (profileImage != null && !profileImage.isEmpty()) {
                 try {
-                    byte[] imageBytes = profileImage.getBytes();
-                    user.setUserImage(imageBytes);  // 이미지 저장 (Byte 배열로 저장하는 경우)
-                } catch (Exception e) {
+                    user.setUserImage(profileImage.getBytes());
+                } catch (IOException e) {
                     throw new RuntimeException("프로필 이미지 처리 중 오류 발생", e);
                 }
             }
-             // 변경 사항 저장
-             userRepository.save(user);
-            } else {
-                throw new RuntimeException("User not found with id " + id);
-            }
-        }
 
-    // 사용자 업데이트
-    @Transactional
-    public User updateUser(String id, User userDetails) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setUserName(userDetails.getUserName());
-            user.setUserNickname(userDetails.getUserNickname());
-            user.setUserPassword(userDetails.getUserPassword());
-            user.setUserImage(userDetails.getUserImage());
-            user.setUserLevel(userDetails.getUserLevel());
-            user.setUpdatedBy(userDetails.getUpdatedBy());
-            return userRepository.save(user);
+            userRepository.save(user);
         } else {
             throw new RuntimeException("User not found with id " + id);
         }
     }
+
 
     // 비밀번호 업데이트 메서드 추가
     public void updatePassword(String id, String newPassword) {
@@ -111,7 +94,38 @@ public class UserService {
         return user != null ? user.getUserPassword() : null;
     }
     
-    public void deleteUser(String id) {
-        userRepository.deleteById(id);
+    public void deleteUser(String userId) {
+        userRepository.deleteById(userId);
     }
+
+    @Transactional
+    public User updateUser(String id, User userDetails) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setUserNickname(userDetails.getUserNickname());
+            user.setUserName(userDetails.getUserName());
+            user.setUserLevel(userDetails.getUserLevel());
+            user.setUserPassword(userDetails.getUserPassword());
+            return userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found with id " + id);
+        }
+    }
+
+    public boolean isUserIdOrNicknameExists(String userId, String userNickname) {
+        boolean userIdExists = false;
+        boolean nicknameExists = false;
+
+        if (userId != null && !userId.isEmpty()) {
+            userIdExists = userRepository.findById(userId).isPresent();
+        }
+
+        if (userNickname != null && !userNickname.isEmpty()) {
+            nicknameExists = userRepository.findByUserNickname(userNickname) != null;
+        }
+
+        return userIdExists || nicknameExists;
+    }
+
 }

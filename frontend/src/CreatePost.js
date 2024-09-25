@@ -68,9 +68,9 @@ function CreatePost() {
 
                 <label>카테고리:</label>
                 <select value={category} onChange={(e) => setCategory(Number(e.target.value))}>
-                    <option value={4}>자유게시판</option>
-                    <option value={2}>공지게시판</option>
+                    <option value={2}>자유게시판</option>
                     <option value={3}>질문게시판</option>
+                    <option value={4}>공지게시판</option>
                 </select>
                 <br />
 

@@ -42,13 +42,15 @@ public class User {
     @PrePersist
     protected void onCreate() {
         this.createdDate = LocalDateTime.now();
-        this.createdBy = "System";
+        this.updatedDate = LocalDateTime.now();
+        if (this.userLevel == null) {
+            this.userLevel = 1; // userLevel 기본값 설정
+        }
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedDate = LocalDateTime.now();
-        this.updatedBy = "System"; 
     }
 
     // Getters and Setters
