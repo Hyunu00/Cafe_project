@@ -157,15 +157,15 @@ function RenderAside({ user, setUser, postCount, error }) {
                             style={{ width: '100px', height: '100px', borderRadius: '50%' }}
                         />
                     )}
-                    <p>닉네임: {user.userNickname}</p>
-                    <p>아이디: {user.userId}</p>
-                    <p>레벨: {user.userLevel}</p>
+                    <p>닉네임 : {user.userNickname}</p>
+                    <p>아이디 : {user.userId}</p>
+                    <p>레벨   : {user.userLevel}</p>
                     <Link to="/my-posts">내가 쓴 글</Link> : {postCount} <br />
                     <Link to="/edit-profile">개인정보 수정</Link><br />
                     {user.userLevel === 4 && (
                         <Link to="/user-management">사용자 관리</Link> // 사용자 관리 링크
                     )}
-                    <button onClick={handleLogout}>로그아웃</button>
+                    <button onClick={handleLogout} className='logout-button'>로그아웃</button>
                 </div>
             )}
         </div>

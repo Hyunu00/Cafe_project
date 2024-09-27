@@ -49,7 +49,7 @@ public class Board {
         this.updatedDate = LocalDateTime.now();
     }
 
-    // Getters and Setters
+
     public Long getBoardNumber() {
         return boardNumber;
     }

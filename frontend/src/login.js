@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './App.css';
 
 function Login({ setUser }) {
     const [userId, setUserId] = useState(''); // 사용자 ID 상태

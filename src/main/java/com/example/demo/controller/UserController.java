@@ -127,7 +127,7 @@ public class UserController {
             userService.deleteUser(userId);
             return ResponseEntity.noContent().build(); 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 오류 시 500 상태 코드 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

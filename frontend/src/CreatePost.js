@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './App.css';
 
 function CreatePost() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [category, setCategory] = useState(1); 
+    const [category, setCategory] = useState(2); 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {

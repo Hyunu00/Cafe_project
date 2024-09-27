@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './App.css';
 
 function BoardDetail({ user }) {
     const { boardNumber } = useParams();

@@ -1,3 +1,4 @@
+/* 기본 스타일 */
 * {
   margin: 0;
   padding: 0;
@@ -6,6 +7,9 @@
 
 body {
   font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  min-width: 1000px; /* 전체 페이지 최소 너비 */
 }
 
 .container {
@@ -15,23 +19,34 @@ body {
   gap: 10px;
   height: 100vh;
   padding: 20px;
+  min-width: 1000px; /* 최소 너비 설정 */
 }
 
 header {
   grid-column: span 2;
   display: flex;
   flex-direction: column;
+  background-color: #007BFF;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  min-width: 1000px; /* 최소 너비 설정 */
 }
 
 .home-link {
   text-align: right;
   margin-bottom: 10px;
+  color: white;
 }
 
 .banner {
-  background-color: #f8d7da;
   text-align: center;
   padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: #0069d9;
 }
 
 .aside-container {
@@ -39,7 +54,9 @@ header {
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  height: calc(100vh - 60px);
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  min-width: 200px; /* 최소 너비 설정 */
 }
 
 .aside-section {
@@ -47,22 +64,10 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #ccc;
-  
-}
-
-.login-section {
-  background-color: #ccc;
-}
-
-.login-button {
-  padding: 10px;
-  width: 100%;
-}
-
-.login-menu {
-  list-style: none;
-  margin-bottom: 100px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .category {
@@ -70,93 +75,270 @@ header {
   margin-top: 20px;
 }
 
-li {
-  margin-bottom: 30px;
+.category a {
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+  display: block;
+  border-radius: 5px;
+  background-color: #e9ecef;
+  margin-bottom: 10px;
 }
 
-.category_list{
-  text-align: center;
-  line-height: 30px;
+.category a:hover {
+  background-color: #007BFF;
+  color: white;
 }
 
-hr{
-  margin-bottom: 30px;
+main {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 800px; /* 최소 너비 설정 */
 }
-
-
 
 /* 테이블 스타일 */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  min-width: 800px; /* 최소 너비 설정 */
 }
 
-table th, table td {
-  border: none; 
+/* 테이블 헤더 (th) 색상을 진하게 변경 */
+table th {
+  padding: 15px;
+  text-align: left;
+  background-color: #0056b3; /* 더 진한 색상 */
+  color: white; /* 글씨는 흰색으로 설정 */
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+}
+
+table td {
+  padding: 15px;
+  text-align: left;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+table tr:hover {
+  background-color: #e9ecef;
+}
+
+.notice-row {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px;
+  margin: 0 5px;
+  background-color: #007BFF;
+  color: white;
+  border-radius: 5px;
+  border: none;
+}
+
+.pagination button[disabled] {
+  background-color: #ccc;
+}
+
+/* 로그인 및 회원가입 */
+.login-container, .register-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 400px; /* 최소 너비 설정 */
+}
+
+h2 {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+input[type="text"], input[type="password"], select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  min-width: 100px; /* 최소 너비 설정 */
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button[disabled] {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 사용자 관리 */
+table.admin-table th, table.admin-table td {
   padding: 10px;
   text-align: left;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
 }
 
-
-table td, table th {
-  border: none; 
+.admin-table img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 
-
-.write-button-container {
+.pagination {
   display: flex;
   justify-content: center;
   margin-top: 20px;
 }
 
-.write-button {
-  padding: 10px 20px;
+/* 글쓰기 폼 */
+form label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-
-h2 {
-  margin-bottom: 30px;
-}
- /* 공지 게시판 */
-.notice-row {
-  background-color: #f0f8ff;
-}
-
-.top-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+form input, form textarea, form select {
+  width: 100%;
+  padding: 10px;
   margin-bottom: 20px;
-}
-
-.write-btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
 }
 
-.search-container {
-  display: flex;
-  align-items: center;
+/* Error 메시지 */
+p.error {
+  color: red;
+  font-size: 14px;
 }
 
-.search-container input {
-  padding: 8px;
-  font-size: 16px;
-  margin-right: 10px;
+/* 로그인, 회원가입, 아이디 찾기, 비밀번호 찾기 버튼 스타일 */
+.login-menu a {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; /* 가로 크기를 100%로 설정 */
 }
 
-.search-container button {
-  background-color: #008CBA;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
+.login-menu a:hover {
+    background-color: #0056b3;
+}
+
+/* 로그인, 회원가입, 아이디 찾기, 비밀번호 찾기 버튼을 중앙 정렬 */
+.login-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* 컨테이너의 너비를 100%로 설정 */
+    max-width: 200px; /* 사이드바 안에서 최대 너비 제한 */
+}
+
+.login-menu {
+    list-style: none;
+    padding: 0;
+    width: 100%; /* 컨테이너 너비 설정 */
+}
+
+/* 로그아웃 버튼 스타일 */
+.logout-button {
+    padding: 10px;
+    width: 100%; /* 부모 컨테이너의 너비에 맞게 설정 */
+    max-width: 180px; /* 최대 너비를 설정하여 칸 밖으로 나가지 않도록 */
+    box-sizing: border-box; /* padding과 border를 포함한 크기 계산 */
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #0056b3;
+}
+
+/* 검색창과 글쓰기 버튼을 한 줄에 정렬 */
+.board-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px; /* 요소 간 간격을 줍니다 */
+    flex-wrap: nowrap; /* 한 줄로 정렬 */
+}
+
+.board-controls select, .board-controls input, .board-controls button {
+    margin-right: 10px; /* 각 요소 간의 간격 */
+    height: 40px; /* 높이를 동일하게 설정 */
+}
+
+.board-controls input {
+    padding: 0 10px; /* 내부 여백을 설정 */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 계산 */
+}
+
+.board-controls button {
+    padding: 0 20px; /* 버튼의 내부 여백 설정 */
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    height: 40px; /* 높이를 input과 동일하게 설정 */
+}
+
+.board-controls button:hover {
+    background-color: #0056b3;
+}
+
+/* 반응형 처리를 위해 버튼 크기 조정 */
+@media (max-width: 768px) {
+    .board-controls {
+        flex-direction: column;
+    }
+
+    .board-controls select, .board-controls input, .board-controls button {
+        width: 100%; /* 작은 화면에서는 전체 너비 차지 */
+        margin-bottom: 10px;
+    }
 }

@@ -44,7 +44,7 @@ public class User {
         this.createdDate = LocalDateTime.now();
         this.updatedDate = LocalDateTime.now();
         if (this.userLevel == null) {
-            this.userLevel = 1; // userLevel 기본값 설정
+            this.userLevel = 1; 
         }
     }
 

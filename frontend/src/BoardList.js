@@ -124,11 +124,17 @@ function BoardList({ user }) {
                     placeholder="검색어를 입력하세요"
                 />
                 <button onClick={handleSearch}>검색</button>
-            </div>
+
+                    {/* 글쓰기 버튼 추가 - 로그인한 사용자만 보임 */}
+                <div className="create-post-button-container">
+                    {user && <button onClick={handleCreatePost}>글쓰기</button>}
+                </div>
+            </div>                                                                                       
+            
 
             <table>
                 <thead>
-                    <tr>
+                    <tr className="list-up">
                         <th>번호</th>
                         <th>카테고리</th>
                         <th>제목</th>
@@ -167,11 +173,6 @@ function BoardList({ user }) {
                 <button onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
                     다음 페이지
                 </button>
-            </div>
-
-            {/* 글쓰기 버튼 추가 - 로그인한 사용자만 보임 */}
-            <div className="create-post-button-container">
-                {user && <button onClick={handleCreatePost}>글쓰기</button>}
             </div>
         </div>
     );
